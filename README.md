@@ -8,3 +8,15 @@ This project ports the IBS/MDS/IBD functionality of PLink to Spark / ADAM.
 
 ## Getting started
 Checkout our [wiki](https://github.com/GELOG/adam-ibs/wiki)
+
+## Software requirements
+[Scala](http://www.scala-lang.org/download/all.html)
+ (Tested working versions : 2.11.6)
+
+## Begin with code
+**com.ets.mgl802.App run exemple :**
+
+    1. Run -> Run... -> Edit Config
+    2. Find Application
+    3. Main Class : com.ets.mgl802.App,  Arguments : arguments, Name : First App Run
+    4. Run
