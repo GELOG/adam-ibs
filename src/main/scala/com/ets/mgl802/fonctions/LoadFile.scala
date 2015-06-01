@@ -1,29 +1,24 @@
-package com.ets.mgl802.load
+package com.ets.mgl802.fonctions
 
 import com.ets.mgl802.data._
 import org.apache.spark.SparkContext
-import org.apache.spark.SparkContext._
-import org.apache.spark.SparkConf
 
 /**
  * Created by ikizema on 15-05-24 : ivan.kizema at gmail.com
  */
-object LoadFile {
-  val conf = new SparkConf().setAppName("Slink").setMaster("local")
-  val sc = new SparkContext(conf)
+class LoadFile (sc : SparkContext) {
   var importRecord: ImportRecord = new ImportRecord
 
   def main(args: Array[String]): Unit = {
-    val fileName = args(0)  // First args = filename
+    val fileName = args(0)                    // First args = filename
     loadFile(fileName)
-
     testLoad()
-    sc.stop()
   }
 
-  def loadFile(fileToLoad: String) {
-    val textFileMap = sc.textFile(fileToLoad+".map")       // loading .map
-    val textFilePed = sc.textFile(fileToLoad+".ped")       // loading .ped
+  def loadFile(fileToLoad: String) : ImportRecord = {
+    val textFileMap = sc.textFile(fileToLoad+".map")
+    val textFilePed = sc.textFile(fileToLoad+".ped")
+
     // Check file
     if (textFileMap.count()==0 || textFilePed.count()==0) {
       println("Error load data : any data in files.")
@@ -52,13 +47,12 @@ object LoadFile {
         }
       }
     }
+    importRecord
   }
 
   def loadOneLine(lineMap: String, linePed: String){
     val lineMapOrganised=lineMap.split("\\s+")
-    //this.importRecord.bimRecords.append(new BimRecord(lineMapOrganised))
     val linePedOrganised=linePed.split("\\s+")
-    //this.importRecord.famRecords.append(new FamRecord(linePedOrganised.take(6)))    // 6 first values from linePed
     var dataPedGenotype = linePedOrganised.drop(6)                                  // On enleve les 6 premieres valeures
     if (dataPedGenotype.length>0) {
       for (numSPN <- 0 to (dataPedGenotype.length/2)-1) {

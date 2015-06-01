@@ -17,4 +17,10 @@ Checkout our [wiki](https://github.com/GELOG/adam-ibs/wiki)
 
 ## Begin with code
 Run LodFile with arguments as following :
-![image](./WIKI/img/exemple_run_loadfile.png)
+
+![image](./WIKI/img/exemple_run_main.png)
+
+
+Imported test data content exemple :
+
+![image](./WIKI/img/test_data_view.png)
