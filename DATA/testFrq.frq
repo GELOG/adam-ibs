@@ -1,0 +1,4 @@
+ CHR  SNP   A1   A2          MAF  NCHROBS
+   1 snp1    G    A         0.25        8
+   1 snp2    1    2            0        6
+   1 snp3    A    C         0.25        4

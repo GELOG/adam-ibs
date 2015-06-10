@@ -1,4 +1,0 @@
-    FID1    IID1    FID2    IID2 RT    EZ      Z0      Z1      Z2  PI_HAT PHE       DST     PPC   RATIO
-  FAM001   1  FAM001   2 OT     0  0.0000  0.9375  0.0625  0.5312   1  0.750000 nan      NA
-  FAM001   1  FAM001   3 OT     0  0.0000  0.9375  0.0625  0.5312   1  0.750000 nan      NA
-  FAM001   2  FAM001   3 OT     0  0.0000  0.0000  1.0000  1.0000   1  1.000000  0.7603      NA

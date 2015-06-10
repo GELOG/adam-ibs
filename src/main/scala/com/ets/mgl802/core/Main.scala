@@ -8,15 +8,24 @@ import com.ets.mgl802.data._
  * Created by ikizema on 15-05-30  : ivan.kizema at gmail.com
  */
 object Main {
-  val conf = new SparkConf().setAppName("Slink").setMaster("local[2]")
+  val conf = new SparkConf().setAppName("Slink").setMaster("local")
   val sc = new SparkContext(conf)
 
   def main(args: Array[String]) {
     val fileName = args(0)  // First args = filename
-    val importRecord = new LoadFile(this.sc).loadFile(fileName)      // Get loaded data
-    val genomeAnalyses = new Genome(importRecord)                    // Genome function with loaded data
 
-    importRecord.ViewContent                                         // View loaded data
+    val writeLog = new WriteLog(this.sc, fileName)
+    val importFiles = new MakeBed(this.sc, fileName, writeLog)
+
+    if (importFiles.loadData()) {
+      // Data loaded correctly
+      writeLog.addLogLine("Data load finished with success.")
+      importFiles.importRecord.ViewContent
+    } else {
+      // Error in data load
+      writeLog.addLogLine("ERROR : Data load failed.")
+    }
+
     sc.stop()
   }
 }
