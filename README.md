@@ -12,7 +12,7 @@ Checkout our [wiki](https://github.com/GELOG/adam-ibs/wiki)
 ## Begin with code
 Run LodFile with arguments as following :
 
-![image](./WIKI/img/Exemple_Run_config.png)
+![image](./WIKI/img/Exemple_Run_Config.png)
 
 
 Imported test data content exemple :

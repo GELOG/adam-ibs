@@ -1,8 +1,8 @@
-package com.ets.mgl802.core
+package com.ets.mgl804.core
 
-import com.ets.mgl802.fonctions._
+import com.ets.mgl804.fonctions._
 import org.apache.spark.{SparkContext, SparkConf}
-import com.ets.mgl802.data._
+import com.ets.mgl804.data._
 
 /**
  * Created by ikizema on 15-05-30  : ivan.kizema at gmail.com

@@ -1,6 +1,6 @@
-package com.ets.mgl802.data
+package com.ets.mgl804.data
 
-import com.ets.mgl802.data.operations.{Encoder, Converter, Bin}
+import com.ets.mgl804.data.operations.{Encoder, Converter, Bin}
 
 import scala.math.pow
 
