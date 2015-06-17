@@ -9,7 +9,7 @@ This project ports the IBS/MDS/IBD functionality of PLink to Spark / ADAM.
 ## Getting started
 Checkout our [wiki](https://github.com/GELOG/adam-ibs/wiki)
 
-## cloner les brances en locale
+## Cloner les branches en locale
 Valable pour une machine (Mac|Linux) avec package GIT installé
 
 ![image](./WIKI/img/git-clone.png)
