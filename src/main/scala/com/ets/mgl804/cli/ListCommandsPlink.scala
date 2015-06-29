@@ -18,12 +18,36 @@ import org.rogach.scallop._
 // List of commands used
 class ListCommandsPlink(arguments: Seq[String]) extends ScallopConf(arguments) {
 
-  val file = opt[String]("file", argName = "name", noshort = true, descr = "Specify .ped + .map filename prefix (default 'plink')")
-  val makeBed = opt[List[String]]("make-bed", argName = "prefix name", noshort = true, descr = "Create a new binary fileset. Specify .ped and .map files")
-  val genome = opt[Boolean]("genome", noshort = true, descr = "Calculate IBS distances between all individuals")
-  val readGenome = opt[String]("read-genome",  argName = "file name", noshort = true, descr = "Command can directly read compressed file")
-  val cluster = opt[Boolean]("cluster", noshort = true, descr = "Cluster samples using a pairwise similarity statistic (normally IBS)")
-  val help = opt[Int]("help", short = 'h', descr = "Show help message")
+  val file        = opt[String](  "file",
+                                  argName = "name",
+                                  noshort = true,
+                                  descr = "Specify .ped + .map filename prefix (default 'plink')"
+                            )
 
+  val makeBed     = opt[List[String]](  "make-bed",
+                                        argName = "prefix name",
+                                        noshort = true,
+                                        descr = "Create a new binary fileset. Specify .ped and .map files"
+                                      )
 
+  val genome      = opt[Boolean]( "genome",
+                                  noshort = true,
+                                  descr = "Calculate IBS distances between all individuals"
+                                )
+
+  val readGenome  = opt[String](  "read-genome",
+                                  argName = "file name",
+                                  noshort = true,
+                                  descr = "Command can directly read compressed file"
+                                )
+
+  val cluster     = opt[Boolean]( "cluster",
+                                  noshort = true,
+                                  descr = "Cluster samples using a pairwise similarity statistic (normally IBS)"
+                                )
+
+  val help        = opt[Int]( "help",
+                              short = 'h',
+                              descr = "Show help message"
+                            )
 }
