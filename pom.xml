@@ -2,22 +2,30 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.ets.mgl804</groupId>
   <artifactId>adam-ibs</artifactId>
+  <packaging>pom</packaging>
   <version>0.1.0</version>
-  <name>${project.artifactId}</name>
-  <description>Plink ibs adaptation to scala</description>
-  <inceptionYear>2015</inceptionYear>
+  <name>Adam IBS</name>
+
+  <modules>
+    <module>adam-ibs-core</module>
+    <module>adam-ibs-data</module>
+  </modules>
 
   <properties>
+    <java.version>1.7</java.version>
     <maven.compiler.source>1.6</maven.compiler.source>
     <maven.compiler.target>1.6</maven.compiler.target>
     <encoding>UTF-8</encoding>
     <scala.tools.version>2.10</scala.tools.version>
     <scala.version>2.10.0</scala.version>
-    <spark.version>1.3.1</spark.version>
+    <spark.version>1.4.0</spark.version>
     <hadoop.version>2.7.0</hadoop.version>
+    <avro.version>1.7.6</avro.version>
+    <parquet.version>1.6.0</parquet.version>
   </properties>
 
   <dependencies>
+    <!-- Scala -->
     <dependency>
       <groupId>org.scala-lang</groupId>
       <artifactId>scala-library</artifactId>
@@ -31,6 +39,13 @@
       <version>${spark.version}</version>
     </dependency>
 
+    <!-- Spark SQL -->
+    <dependency>
+      <groupId>org.apache.spark</groupId>
+      <artifactId>spark-sql_2.10</artifactId>
+      <version>${spark.version}</version>
+    </dependency>
+
     <!-- Hadoop -->
     <!--<dependency>-->
       <!--<groupId>org.apache.hadoop</groupId>-->
@@ -38,7 +53,7 @@
       <!--<version>${hadoop.version}</version>-->
     <!--</dependency>-->
 
-    <!-- Test -->
+     <!--Test-->
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
@@ -59,46 +74,4 @@
     </dependency>
   </dependencies>
 
-  <build>
-    <sourceDirectory>src/main/scala</sourceDirectory>
-    <testSourceDirectory>src/test/scala</testSourceDirectory>
-    <plugins>
-      <plugin>
-        <!-- see http://davidb.github.com/scala-maven-plugin -->
-        <groupId>net.alchim31.maven</groupId>
-        <artifactId>scala-maven-plugin</artifactId>
-        <version>3.1.3</version>
-        <executions>
-          <execution>
-            <goals>
-              <goal>compile</goal>
-              <goal>testCompile</goal>
-            </goals>
-            <configuration>
-              <args>
-                <arg>-make:transitive</arg>
-                <arg>-dependencyfile</arg>
-                <arg>${project.build.directory}/.scala_dependencies</arg>
-              </args>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <version>2.13</version>
-        <configuration>
-          <useFile>false</useFile>
-          <disableXmlReport>true</disableXmlReport>
-          <!-- If you have classpath issue like NoDefClassError,... -->
-          <!-- useManifestOnlyJar>false</useManifestOnlyJar -->
-          <includes>
-            <include>**/*Test.*</include>
-            <include>**/*Suite.*</include>
-          </includes>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
 </project>
