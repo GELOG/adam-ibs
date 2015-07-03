@@ -9,6 +9,7 @@ import org.apache.spark.SparkContext
 // ToDo : Write code to make file logger
 
 class WriteLog (sc : SparkContext, filenameToLog: String) {
+
   def addLogLine (logLine : String) {
     System.out.println(logLine)
   }
