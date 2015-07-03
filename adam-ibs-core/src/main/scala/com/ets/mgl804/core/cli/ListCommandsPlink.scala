@@ -1,4 +1,4 @@
-package com.ets.mgl804.cli
+package com.ets.mgl804.core.cli
 
 import org.rogach.scallop._
 /**

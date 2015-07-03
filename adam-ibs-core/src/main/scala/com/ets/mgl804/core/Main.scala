@@ -1,6 +1,6 @@
 package com.ets.mgl804.core
 
-import com.ets.mgl804.cli._
+import com.ets.mgl804.core.cli._
 
 /**
  * Authors: Khaled Ben Ali et Karen Mou Kui

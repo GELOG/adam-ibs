@@ -1,4 +1,4 @@
-package com.ets.mgl804.cli
+package com.ets.mgl804.core.cli
 
 /**
  * Authors: Khaled Ben Ali et Karen Mou Kui
@@ -19,7 +19,6 @@ object PlinkMethod {
 
   def file(name:String) {
     this.fileName = name
-//    println("File with file: " + name)
   }
 
   def makeBed() {
