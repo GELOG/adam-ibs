@@ -17,6 +17,7 @@
             <plugin>
                 <groupId>org.apache.avro</groupId>
                 <artifactId>avro-maven-plugin</artifactId>
+                <version>1.7.7</version>
                 <executions>
                     <execution>
                         <id>schemas</id>
