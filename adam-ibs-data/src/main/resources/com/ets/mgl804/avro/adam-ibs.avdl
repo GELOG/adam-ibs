@@ -1,0 +1,99 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+@namespace("com.ets.mgl804.avro")
+protocol AvroSparkSQL {
+
+record Individual {
+  union { null, string } familyId = null;
+  union { null, string } individualId = null;
+  union { null, string } paternalId = null;
+  union { null, string } maternalId = null;
+  union { null, string } sex = null;
+  union { null, string } phenotype = null;
+  union { null, string } nucleotide = null;
+}
+
+enum SexType {
+    1,
+    2,
+    0
+}
+
+record Phenotype {
+  union { null, string } phenotype = null;
+}
+
+record Nucleotide {
+  union { null, Variant } variant = null;
+  union { null, NucleotideType } nucleotideAllele1 = null;
+  union { null, NucleotideType } nucleotideAllele2 = null;
+  union { null, GenotypeCodeType } genotypeCode = null;
+}
+
+enum NucleotideType {
+    A,
+    G,
+    T,
+    C
+}
+
+enum GenotypeCodeType {
+    00,
+    01,
+    10,
+    11
+}
+
+record Contig {
+  union { null, string } contigName = null;
+  union { null, long }   contigLength = null;
+  union { null, string } contigMD5 = null;
+  union { null, string } referenceURL = null;
+  union { null, string } assembly = null;
+  union { null, string } species = null;
+}
+
+record Variant {
+  union { null, Contig } contig = null;
+  union { null, long } start = null;
+  union { null, long } end = null;
+  union { null, string } referenceAllele = null;
+  union { null, string } alternateAllele = null;
+  union { null, StructuralVariant } svAllele = null;
+  union { boolean, null } isSomatic = false;
+}
+
+record StructuralVariant {
+  union { null, StructuralVariantType } type = null;
+  union { null, string } assembly = null;
+  union { boolean, null } precise = true;
+  union { null, int } startWindow = null;
+  union { null, int } endWindow = null;
+}
+
+enum StructuralVariantType {
+  DELETION,
+  INSERTION,
+  INVERSION,
+  MOBILE_INSERTION,
+  MOBILE_DELETION,
+  DUPLICATION,
+  TANDEM_DUPLICATION
+}
+
+}
