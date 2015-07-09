@@ -8,12 +8,12 @@ package com.ets.mgl804.core.cli
  *
  */
 
+import com.ets.mgl804.core.AppContext
 import com.ets.mgl804.fonctions._
-import org.apache.spark.{SparkConf, SparkContext}
 
 object PlinkMethod {
-  val conf = new SparkConf().setAppName("Adam-IBS").setMaster("local")
-  val sc = new SparkContext(conf)
+  val conf = AppContext.conf;
+  val sc = AppContext.sc;
 
   var fileName = new String()
 

@@ -5,7 +5,7 @@ import org.apache.avro.generic.IndexedRecord
 import org.apache.hadoop.fs.Path
 import org.apache.spark.sql.{DataFrame, SQLContext}
 import org.apache.spark.{SparkConf, SparkContext}
-import com.ets.mgl804.avro.{Message, User}
+import com.ets.mgl804.avrotest.{Message, User}
 import org.bdgenomics.formats.avro.{Variant, Genotype}
 import parquet.avro.AvroParquetWriter
 
@@ -136,7 +136,7 @@ object ParquetAvroSparkExample {
       .build()
   }
 
-  def createMessage(idx:Int, maxUsers: Int): com.ets.mgl804.avro.Message =
+  def createMessage(idx:Int, maxUsers: Int): com.ets.mgl804.avrotest.Message =
   {
     val r = scala.util.Random
     val senderId:Int = r.nextInt(maxUsers)

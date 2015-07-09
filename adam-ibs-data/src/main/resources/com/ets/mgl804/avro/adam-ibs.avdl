@@ -16,74 +16,26 @@
  */
 
 @namespace("com.ets.mgl804.avro")
-protocol AvroSparkSQL {
+protocol BDG {
 
-record Individual {
-  union { null, string } familyId = null;
-  union { null, string } individualId = null;
-  union { null, string } paternalId = null;
-  union { null, string } maternalId = null;
-  union { null, string } sex = null;
-  union { null, string } phenotype = null;
-  union { null, string } nucleotide = null;
-}
-
-enum SexType {
-    1,
-    2,
-    0
-}
-
-record Phenotype {
-  union { null, string } phenotype = null;
-}
-
-record Nucleotide {
-  union { null, Variant } variant = null;
-  union { null, NucleotideType } nucleotideAllele1 = null;
-  union { null, NucleotideType } nucleotideAllele2 = null;
-  union { null, GenotypeCodeType } genotypeCode = null;
-}
-
-enum NucleotideType {
-    A,
-    G,
-    T,
-    C
-}
-
-enum GenotypeCodeType {
-    00,
-    01,
-    10,
-    11
-}
-
-record Contig {
-  union { null, string } contigName = null;
-  union { null, long }   contigLength = null;
-  union { null, string } contigMD5 = null;
-  union { null, string } referenceURL = null;
-  union { null, string } assembly = null;
-  union { null, string } species = null;
-}
-
-record Variant {
-  union { null, Contig } contig = null;
-  union { null, long } start = null;
-  union { null, long } end = null;
-  union { null, string } referenceAllele = null;
-  union { null, string } alternateAllele = null;
-  union { null, StructuralVariant } svAllele = null;
-  union { boolean, null } isSomatic = false;
-}
-
-record StructuralVariant {
-  union { null, StructuralVariantType } type = null;
-  union { null, string } assembly = null;
-  union { boolean, null } precise = true;
-  union { null, int } startWindow = null;
-  union { null, int } endWindow = null;
+enum Base {
+  A,
+  C,
+  T,
+  G,
+  U,
+  N, // any
+  X, // any
+  K, // keto: G/T
+  M, // aMino: A/C
+  R, // puRine: A/G
+  Y, // pYriminidine: C/T
+  S, // Strong: C/G
+  W, // Weak: A/T
+  B, // not A
+  V, // not T
+  H, // not G
+  D  // not C
 }
 
 enum StructuralVariantType {
@@ -94,6 +46,54 @@ enum StructuralVariantType {
   MOBILE_DELETION,
   DUPLICATION,
   TANDEM_DUPLICATION
+}
+
+record Phenotype {
+  union { null, string } phenotype = null;
+}
+
+record Contig {
+  union { null, string } contigName = null;
+  union { null, string } contigLength = null;
+  union { null, string } contigMD5 = null;
+  union { null, string } referenceURL = null;
+  union { null, string } assembly = null;
+  union { null, string } species = null;
+}
+record StructuralVariant {
+  union { null, StructuralVariantType } type = null;
+  union { null, string } assembly = null;
+  union { boolean, null } precise = true;
+  union { null, int } startWindow = null;
+  union { null, int } endWindow = null;
+}
+
+record Variant {
+  union { null, string } contig = null;
+  union { null, long } start = null;
+  union { null, long } end = null;
+  union { null, string } referenceAllele = null;
+  union { null, string } alternateAllele = null;
+  union { null, StructuralVariant } svAllele = null;
+  union { boolean, null } isSomatic = false;
+}
+
+record Nucleotide {
+  union { null, Variant } variant = null;
+  union { null, Base } nucleotideAllele1 = null;
+  union { null, Base } nucleotideAllele2 = null;
+  union { null, string } genotypeCode = null;       // 00, 01, 10, 11
+}
+
+record Individual {
+  union { null, string } familyId = null;
+  union { null, string } individualId = null;
+  union { null, string } paternalId = null;
+  union { null, string } maternalId = null;
+  union { null, int } sex = null;
+  union { null, Phenotype } phenotype = null;
+  union { null, array<Nucleotide> } nucleotide = null;
+
 }
 
 }
