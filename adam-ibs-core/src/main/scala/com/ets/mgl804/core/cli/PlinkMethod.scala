@@ -36,6 +36,8 @@ object PlinkMethod {
       // Data loaded correctly
       writeLog.addLogLine("Data load finished with success.")
       importFiles.importRecord.ViewContent
+      importFiles.persistAvro("output3")
+
     } else {
       // Error in data load
       writeLog.addLogLine("ERROR : Data load failed.")

@@ -14,9 +14,28 @@ class FamRecord(famRecord: Array[String]) {
   var idMaternal = famRecord(3)
   var sexe = famRecord(4)                //(1=male; 2=female; other=unknown)
   var phenotype = famRecord(5)
+
   def GenerateString : String = {
     this.idFamily + " " + this.idIndividual + " " + this.idPaternal + " " +
       this.idMaternal + " " + this.sexe + " " + this.phenotype
+  }
+  def getIdFamily() : CharSequence = {
+    return this.idFamily
+  }
+  def getIdIndividual() : CharSequence = {
+    return this.idIndividual
+  }
+  def getIdPaternal() : CharSequence = {
+    return this.idPaternal
+  }
+  def getIdMaternal() : CharSequence = {
+    return this.idMaternal
+  }
+  def getSexe() : String = {
+    return this.sexe
+  }
+  def getPhenotype() : CharSequence = {
+    return this.phenotype
   }
 }
 
@@ -56,6 +75,7 @@ class BimRecord(mapRecord: Array[String]) {
   var basepairPosition:Int = mapRecord(3).toInt
   var minorAllele:String = "-1"
   var majorAllele:String = "-1"
+
   def GenerateString : String = {
     this.chronosome + " " + this.variantIdentifier + " " + this.geneticDisatance + " " +
       this.basepairPosition + " " + this.minorAllele + " " + this.majorAllele
@@ -79,6 +99,24 @@ class BimRecord(mapRecord: Array[String]) {
     }
     this.minorAllele=allelesNorm(0)
     this.majorAllele=allelesNorm(1)
+  }
+  def getChronosome() : CharSequence = {
+    return this.chronosome
+  }
+  def getVariantIdentifier() : CharSequence = {
+    return this.variantIdentifier
+  }
+  def getGeneticDisatance() : CharSequence = {
+    return this.geneticDisatance
+  }
+  def getBasepairPosition() : Long = {
+    return this.basepairPosition
+  }
+  def getMinorAllele() : CharSequence = {
+    return this.minorAllele
+  }
+  def getMajorAllele() : CharSequence = {
+    return this.majorAllele
   }
 }
 
@@ -178,9 +216,6 @@ class ImportRecord() {
         counterBite=counterBite-1
 
         if (counterBite==0) {
-          // write Byte oneByteArray as counterByte number
-          // oneByteArray.foreach(bite => print(bite))
-          // println()
           this.bedRecord.addByte(Converter.intArrayToByte(oneByteArray))
           // initialise Byte
           oneByteArray=Array(0,0,0,0,0,0,0,0)
@@ -189,10 +224,6 @@ class ImportRecord() {
           counterByte=counterByte+1     // increment when 1 byte fully writed
         }
         if (j==samplesNb-1) {
-          // Last value, uncompleted bytes are already nulls
-          // write Byte oneByteArray as counterByte number
-          // oneByteArray.foreach(bite => print(bite))
-          // println()
           this.bedRecord.addByte(Converter.intArrayToByte(oneByteArray))
           counterByte=counterByte+1     // increment when 1 byte completed
           counterBite=4

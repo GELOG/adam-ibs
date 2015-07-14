@@ -93,7 +93,6 @@ record Individual {
   union { null, int } sex = null;
   union { null, Phenotype } phenotype = null;
   union { null, array<Nucleotide> } nucleotide = null;
-
 }
 
 }

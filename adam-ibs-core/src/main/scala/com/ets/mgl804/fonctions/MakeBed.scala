@@ -32,7 +32,14 @@ class MakeBed(sc : SparkContext, fileToLoad: String, loging : WriteLog) {
 
     this.importRecord.computeBimAlleles()
     this.importRecord.computeBedData()
+
     dataCorrect;
+  }
+
+  def persistAvro(filename:String) {
+    // Executing persistance to avro
+    val persisteData = new PersistImportRecord(this.importRecord, filename)
+    persisteData.persistData()
   }
 
   def getVariantsNum(): Int = {
