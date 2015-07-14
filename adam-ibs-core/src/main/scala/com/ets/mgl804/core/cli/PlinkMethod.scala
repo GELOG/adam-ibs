@@ -14,13 +14,20 @@ import com.ets.mgl804.fonctions._
 object PlinkMethod {
   val conf = AppContext.conf;
   val sc = AppContext.sc;
-
   var fileName = new String()
+  var outputFileName = new String()
 
+  // --file
   def file(name:String) {
     this.fileName = name
   }
 
+  // --out
+  def out(name:String) {
+    this.outputFileName = name
+  }
+
+  // --make-bed
   def makeBed() {
     val writeLog    = new WriteLog(sc, this.fileName)
     val importFiles = new MakeBed(sc, this.fileName, writeLog)
@@ -33,18 +40,20 @@ object PlinkMethod {
       // Error in data load
       writeLog.addLogLine("ERROR : Data load failed.")
     }
-
     sc.stop()
   }
 
+  // --genome
   def genome(name:Unit) : Unit = {
     println("genome")
   }
 
+  // --read-genome
   def readGenome() : Unit = {
     println("read-genome")
   }
 
+  // --cluster
   def cluster(name:Unit) : Unit = {
     println("cluster")
   }

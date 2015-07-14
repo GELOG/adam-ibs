@@ -11,34 +11,47 @@ import org.rogach.scallop._
 // List of commands used
 class ListCommandsPlink(arguments: Seq[String]) extends ScallopConf(arguments) {
 
-  val file        = opt[String](  "file",
-                                  argName = "name",
-                                  noshort = true,
-                                  descr = "Specify .ped + .map filename prefix (default 'plink')"
-                            )
+  val file = opt[String](
+    "file",
+    argName = "name",
+    noshort = true,
+    descr = "Specify .ped + .map filename prefix (default 'plink')"
+  );
 
-  val makeBed     = opt[Boolean](  "make-bed",
-                                        noshort = true,
-                                        descr = "Create a new binary fileset. Specify .ped and .map files"
-                                      )
+  val out = opt[String](
+    "out",
+    argName = "name",
+    noshort = true,
+    descr = "Specify the output filename"
+  );
 
-  val genome      = opt[Boolean]( "genome",
-                                  noshort = true,
-                                  descr = "Calculate IBS distances between all individuals"
-                                )
+  val makeBed  = opt[Boolean](
+    "make-bed",
+    noshort = true,
+    descr = "Create a new binary fileset. Specify .ped and .map files"
+  );
 
-  val readGenome  = opt[Boolean](  "read-genome",
-                                  noshort = true,
-                                  descr = "Command can directly read compressed file"
-                                )
+  val genome = opt[Boolean](
+    "genome",
+     noshort = true,
+     descr = "Calculate IBS distances between all individuals"
+  );
 
-  val cluster     = opt[Boolean]( "cluster",
-                                  noshort = true,
-                                  descr = "Cluster samples using a pairwise similarity statistic (normally IBS)"
-                                )
+  val readGenome = opt[Boolean](
+    "read-genome",
+    noshort = true,
+    descr = "Command can directly read compressed file"
+  );
 
-  val help        = opt[Int]( "help",
-                              short = 'h',
-                              descr = "Show help message"
-                            )
+  val cluster = opt[Boolean](
+    "cluster",
+    noshort = true,
+    descr = "Cluster samples using a pairwise similarity statistic (normally IBS)"
+  );
+
+  val help = opt[Int](
+    "help",
+    short = 'h',
+    descr = "Show help message"
+  );
 }

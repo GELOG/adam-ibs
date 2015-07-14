@@ -19,6 +19,7 @@ object Main {
         if (arg.charAt(0)=='-') {
           arg match {
             case "--file" => PlinkMethod.file(conf.file())
+            case "--out" => PlinkMethod.out(conf.out())
             case "--make-bed" => PlinkMethod.makeBed()
             case "--genome" => PlinkMethod.genome(conf.genome())
             case "--cluster" => PlinkMethod.cluster(conf.cluster())
