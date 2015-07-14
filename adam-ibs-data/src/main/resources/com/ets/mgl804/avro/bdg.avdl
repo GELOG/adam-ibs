@@ -659,6 +659,8 @@ record Genotype {
    @see isPhased
    */
   union { null, int }     phaseQuality = null;
+
+  union { null, array<Base> } allelesBase = null;
 }
 
 record VariantEffect {
@@ -780,6 +782,56 @@ record Feature {
    They are all encoded as (string, string) key-value pairs.
    */
   map<string> attributes = {};
+}
+
+// Adam-ibs project addings
+
+record Phenotype {
+  union { null, string } phenotype = null;
+}
+
+enum Sex {
+  Male,
+  Female,
+  Unknown
+}
+
+enum IbdIbdRelationType {
+  UN,
+  FS,
+  HS,
+  PO,
+  OT
+}
+
+record Individual {
+  union { null, string } familyId = null;
+  union { null, string } individualId = null;
+  union { null, string } paternalId = null;
+  union { null, string } maternalId = null;
+  union { null, Sex } sex = null;
+  union { null, Phenotype } phenotype = null;
+  union { null, array<Genotype> } genotype = null;
+}
+
+record PairwiseIbsIbd {
+  union { null, Individual } individual1 = null;
+  union { null, Individual } individual2 = null;
+  union { null, IbdIbdRelationType } relationType = null;
+  union { null, int } ibdExpectedValue = null;
+  union { null, double } z0 = null;
+  union { null, double } z1 = null;
+  union { null, double } z2 = null;
+  union { null, double } ibdProportion = null;
+  union { null, int } pairwisePhenotypicCode = null;
+  union { null, double } ibsDistance = null;
+  union { null, double } pValueBinomialTest = null;
+  union { null, double } ratioIBS0 = null;
+  union { null, int } numberNonMissingVariant0 = null;
+  union { null, int } numberNonMissingVariant1 = null;
+  union { null, int } numberNonMissingVariant2 = null;
+  union { null, double } number0SNPInPPCTest = null;
+  union { null, double } number2SNPInPPCTest = null;
 }
 
 }
