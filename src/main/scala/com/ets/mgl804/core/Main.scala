@@ -2,6 +2,7 @@ package com.ets.mgl804.core
 
 import com.ets.mgl804.cli._
 import org.rogach.scallop._
+import org.apache.log4j.PropertyConfigurator
 import org.slf4j.{LoggerFactory, Logger}
 import ch.qos.logback.classic.LoggerContext
 import ch.qos.logback.core.util.StatusPrinter
@@ -14,11 +15,13 @@ object Main {
 
   def main(args: Array[String]) {
 
+    // PropertyConfigurator.configure("src/main/resources/log4j.properties")
+
     val conf: ListCommandsPlink = new ListCommandsPlink(args)
 
     def logger = LoggerFactory.getLogger(this.getClass())
 
-    logger.info("vikas")
+    logger.info("Args(0) : " + args(0) )
 
     conf.args(0) match {
         case "--file" => PlinkMethod.file(conf.file())

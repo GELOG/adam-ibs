@@ -2,14 +2,21 @@
 <configuration>
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{5} - %msg%n</pattern>
+            <!-- pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{5} - %msg%n</pattern -->
+            <pattern>%d{HH:mm:ss.SSS} [%thread] [%-5level] [%logger{6}] : %msg%n</pattern>
         </encoder>
     </appender>
-    <logger name="com.lordofthejars.foo" level="INFO" additivity="false">
-        <appender-ref ref="STDOUT" />
-    </logger>
-    <root level="DEBUG">
+    <!-- desactivé tous les log -->
+    <root level="OFF">
         <appender-ref ref="STDOUT" />
     </root>
 
+    <!-- Ou, customiser les pakages a loguer -->
+    <!-- logger name="org.apache.spark" level="ERROR" / -->
+    <!-- logger name="org.spark-project" level="ERROR" / -->
+    <!-- logger name="akka" level="ERROR" / -->
+    <!-- logger name="org.apache.hadoop" level="ERROR" / -->
+
+    <!-- activer seulement les logs du package com.ets.mgl804 -->
+    <logger name="com.ets.mgl804" level="INFO" />
 </configuration>

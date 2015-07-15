@@ -1,6 +1,7 @@
 package com.ets.mgl804.data
 
 import com.ets.mgl804.data.operations.{Encoder, Converter, Bin}
+import org.slf4j.LoggerFactory
 
 import scala.math.pow
 
@@ -87,14 +88,19 @@ class ImportRecord() {
   var bimRecords = scala.collection.mutable.Buffer[BimRecord]()
   var famRecords = scala.collection.mutable.Buffer[FamRecord]()
   var spnForFams = scala.collection.mutable.Buffer[SPNforFam]()
+  def logb = LoggerFactory.getLogger(this.getClass())
+
   def ViewContent = {
     //println("Bed Binary Records : " + this.bedRecord.bedRecordBinary.length)
     this.bedRecord.viewContent()
-    println("Fam Records : " + this.famRecords.length)
+    // println
+    logb.info("Fam Records : " + this.famRecords.length)
     this.famRecords.foreach(record => println(record.GenerateString))
-    println("SPNs : " + this.spnForFams.length)
+    // println
+    logb.info("SPNs : " + this.spnForFams.length)
     this.spnForFams.foreach(record => println(record.GenerateString))
-    println("Bim Records : " + this.bimRecords.length)
+    // println
+    logb.info("Bim Records : " + this.bimRecords.length)
     this.bimRecords.foreach(record => println(record.GenerateString))
   }
   // Calculation Alleles in the Bim File (A1 and A2)
@@ -204,6 +210,7 @@ class ImportRecord() {
 
 class BedRecordBibary() {
   var bedRecordBinary = scala.collection.mutable.Buffer[Byte]()
+  def logb = LoggerFactory.getLogger(this.getClass())
   // The first three bytes are the magic number.
   bedRecordBinary.append(0x6c)
   bedRecordBinary.append(0x1b)
@@ -217,8 +224,10 @@ class BedRecordBibary() {
     this.bedRecordBinary.toArray.toString
   }
   def viewContent() {
-    println("Bed Writed Bytes : " + (this.bedRecordBinary.length-3))
-    println(Bin.valueOf(bedRecordBinary))
+    // println
+    logb.info("Bed Writed Bytes : " + (this.bedRecordBinary.length-3))
+    // println
+    logb.info(""+Bin.valueOf(bedRecordBinary))
   }
   def addBytesForVariant(bytesForVariant : Array[Byte]) {
     bytesForVariant.foreach(byte => this.bedRecordBinary.append(byte))
