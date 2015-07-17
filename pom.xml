@@ -18,7 +18,7 @@
     <encoding>UTF-8</encoding>
     <scala.tools.version>2.10</scala.tools.version>
     <scala.version>2.10.0</scala.version>
-    <spark.version>1.4.0</spark.version>
+    <spark.version>1.4.1</spark.version>
     <hadoop.version>2.7.0</hadoop.version>
     <avro.version>1.7.7</avro.version>
     <parquet.version>1.6.0</parquet.version>

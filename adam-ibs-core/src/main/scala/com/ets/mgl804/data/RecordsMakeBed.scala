@@ -1,6 +1,7 @@
 package com.ets.mgl804.data
 
 import com.ets.mgl804.data.operations.{Encoder, Converter, Bin}
+import org.bdgenomics.formats.avro.Base
 
 import scala.math.pow
 
@@ -39,28 +40,83 @@ class FamRecord(famRecord: Array[String]) {
   }
 }
 
-class SPNforFam() {
-  var spnRecords = scala.collection.mutable.Buffer[Array[String]]()
+// #### Obsolete, remplacé par SpnFamBase
+//class SPNforFam() {
+//  var spnRecords = scala.collection.mutable.Buffer[Array[String]]()
+//  def addSPN(spnRecord: Array[String]) {
+//    // Code : 1,2,3,4 = A,C,G,T and 0 -> Missing
+//    var spnUnified = Array("0","0")
+//    for (i <- 0 to 1) {
+//      spnUnified(i) = spnRecord(i) match {
+//        case "0" => "0"
+//        case "1" => "A"
+//        case "2" => "C"
+//        case "3" => "G"
+//        case "4" => "T"
+//        case "A" => "A"
+//        case "C" => "C"
+//        case "G" => "G"
+//        case "T" => "T"
+//        case _ =>  "-1"       // Error in data
+//      }
+//    }
+//    //this.spnRecords.append(Array(spnRecord(0), spnRecord(1)))     // Original Data
+//    this.spnRecords.append(spnUnified)                              // Normalised Data
+//  }
+//  def getSpnNum(position:Int): Array[String] = {
+//    return this.spnRecords(position)
+//  }
+//  def GenerateString: String = {
+//    var output = ""
+//    this.spnRecords.foreach(rec => output = output + rec(0) + rec(1) + " ")
+//    return output
+//  }
+//}
+
+// New SPNforFam using Enum base
+class SpnFamBase() {
+  var spnRecords = scala.collection.mutable.Buffer[Array[Base]]()
+
   def addSPN(spnRecord: Array[String]) {
     // Code : 1,2,3,4 = A,C,G,T and 0 -> Missing
-    var spnUnified = Array("0","0")
+    var spnUnified = new Array[Base](2)
     for (i <- 0 to 1) {
-      spnUnified(i) = spnRecord(i) match {
-        case "0" => "0"
-        case "1" => "A"
-        case "2" => "C"
-        case "3" => "G"
-        case "4" => "T"
-        case "A" => "A"
-        case "C" => "C"
-        case "G" => "G"
-        case "T" => "T"
-        case _ =>  "-1"       // Error in data
+      if (spnRecord(i) == "0" ){
+        spnUnified(i)=Base.Miss
+      } else if (spnRecord(i) == "1" ){
+        spnUnified(i)=Base.A
+      } else if (spnRecord(i) == "2" ){
+        spnUnified(i)=Base.C
+      } else if (spnRecord(i) == "3" ){
+        spnUnified(i)=Base.G
+      } else if (spnRecord(i) == "4" ){
+        spnUnified(i)=Base.T
+      } else if (spnRecord(i) == "A" ){
+        spnUnified(i)=Base.A
+      } else if (spnRecord(i) == "C" ){
+        spnUnified(i)=Base.C
+      } else if (spnRecord(i) == "G" ){
+        spnUnified(i)=Base.G
+      } else if (spnRecord(i) == "T" ){
+        spnUnified(i)=Base.T
+      } else {
+        spnUnified(i)=Base.Error
       }
     }
     //this.spnRecords.append(Array(spnRecord(0), spnRecord(1)))     // Original Data
     this.spnRecords.append(spnUnified)                              // Normalised Data
   }
+  def getSpnNum(position:Int): Array[Base] = {
+    return this.spnRecords(position)
+  }
+  def getLengh : Int = {
+    return this.spnRecords.length
+  }
+
+  def getSpnNumList(position:Int): List[Base] = {
+    return List(this.spnRecords(position)(0), this.spnRecords(position)(1))
+  }
+
   def GenerateString: String = {
     var output = ""
     this.spnRecords.foreach(rec => output = output + rec(0) + rec(1) + " ")
@@ -124,8 +180,13 @@ class ImportRecord() {
   var bedRecord = new BedRecordBibary()
   var bimRecords = scala.collection.mutable.Buffer[BimRecord]()
   var famRecords = scala.collection.mutable.Buffer[FamRecord]()
-  var spnForFams = scala.collection.mutable.Buffer[SPNforFam]()
-  def ViewContent = {
+  var spnForFams = scala.collection.mutable.Buffer[SpnFamBase]()
+
+  def getSnpIndividual(individualNum : Int) : SpnFamBase = {
+    return this.spnForFams(individualNum)
+  }
+
+  def ViewContent() = {
     //println("Bed Binary Records : " + this.bedRecord.bedRecordBinary.length)
     this.bedRecord.viewContent()
     println("Fam Records : " + this.famRecords.length)

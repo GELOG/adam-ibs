@@ -1,45 +1,35 @@
-package com.ets.mgl804.fonctions
+package com.ets.mgl804.fonctions.MakeBedPersistance
 
-import com.ets.mgl804.data.{BimRecord, SPNforFam, FamRecord, ImportRecord}
+import com.ets.mgl804.fonctions.WriteLog
 import org.apache.spark.SparkContext
-
 /**
  * Created by ikizema on 15-06-05.
+ *
+ * Class make a check of coherence of input .ped and .map files.
  */
-class MakeBed(sc : SparkContext, fileToLoad: String, loging : WriteLog) {
+
+
+class CheckPed(sc : SparkContext, fileToLoad: String) {
   val textFileMap = sc.textFile(fileToLoad + ".map")
   val textFilePed = sc.textFile(fileToLoad + ".ped")
-  val writeLog = loging
-  val importRecord = new ImportRecord()
+  val writeLog = new WriteLog(sc, fileToLoad)
 
-  def loadData() : Boolean = {
+  def checkData() : Boolean = {
     var dataCorrect = true
-    val variantsFound = this.getVariantsNum()
-    val individualsFound = this.getIndividualsNum()(0)
-
     // Check .map
-    if (variantsFound<0) {
+    if (getVariantsNum()<0) {
       dataCorrect=false
     } else {
-      writeLog.addLogLine("Variants found : "+variantsFound.toString+".")
+      writeLog.addLogLine("Variants found : "+getVariantsNum.toString)
     }
     // Check .ped
-    if (individualsFound < 0) {
+    if (getIndividualsNum()(0) < 0) {
       dataCorrect=false
     } else {
-      writeLog.addLogLine("Individuals found : "+individualsFound.toString+".")
+      writeLog.addLogLine("Individuals found : "+getIndividualsNum()(0).toString+". "+getIndividualsNum()(1).toString+" SPNs each.")
     }
 
-    this.importRecord.computeBimAlleles()
-    this.importRecord.computeBedData()
-
     dataCorrect;
-  }
-
-  def persistAvro(filename:String) {
-    // Executing persistance to avro
-    val persisteData = new PersistImportRecord(this.importRecord, filename)
-    persisteData.persistData()
   }
 
   def getVariantsNum(): Int = {
@@ -59,7 +49,6 @@ class MakeBed(sc : SparkContext, fileToLoad: String, loging : WriteLog) {
           return -1
         } else {
           numberVariants = numberVariants + 1
-          processMapLine(lineMap.drop(1))
         }
       } else {
         if (lineMap.length != 4) {
@@ -67,7 +56,6 @@ class MakeBed(sc : SparkContext, fileToLoad: String, loging : WriteLog) {
           return -1
         } else {
           numberVariants = numberVariants + 1
-          processMapLine(lineMap)
         }
       }
     }
@@ -89,12 +77,8 @@ class MakeBed(sc : SparkContext, fileToLoad: String, loging : WriteLog) {
         if (linePed(0) == "") {
           // not count 1st char
           numberSPNsIndividial=(linePed.length-6-1)
-          processPedLine(linePed.drop(1))
-          numberIndividuals = numberIndividuals + 1
         } else {
           numberSPNsIndividial=(linePed.length-6)
-          processPedLine(linePed)
-          numberIndividuals = numberIndividuals + 1
         }
         if (numberSPNs == -1) {
           numberSPNs = numberSPNsIndividial
@@ -102,24 +86,10 @@ class MakeBed(sc : SparkContext, fileToLoad: String, loging : WriteLog) {
           writeLog.addLogLine("ERROR : Not same number of SPNs Individual in .ped file line " + lineNum)
           return Array(-1,-1)
         }
-        //numberIndividuals = numberIndividuals + 1
+        numberIndividuals = numberIndividuals + 1
       }
     }
 
     return Array(numberIndividuals,numberSPNs/2)
-  }
-
-  // Processing one line of .ped
-  def processPedLine(linePed : Array[String]) {
-    this.importRecord.famRecords.append(new FamRecord(linePed.take(6)))
-    val lineSPNs = linePed.drop(6)
-    this.importRecord.spnForFams.append(new SPNforFam())
-    for (spn <- 0 to lineSPNs.length/2-1) {
-      this.importRecord.spnForFams.last.addSPN(Array(lineSPNs(spn*2),lineSPNs(spn*2+1)))
-    }
-  }
-
-  def processMapLine(lineMap : Array[String]) {
-    this.importRecord.bimRecords.append(new BimRecord(lineMap))
   }
 }

@@ -309,7 +309,9 @@ enum Base {
   B, // not A
   V, // not T
   H, // not G
-  D  // not C
+  D, // not C
+  Miss, // missing Data
+  Error // error in Data
 }
 
 /**
@@ -471,6 +473,7 @@ enum GenotypeType {
 // This record represents all stats that, inside a VCF, are stored outside of the
 // sample but are computed based on the samples.  For instance,  MAPQ0 is an aggregate
 // stat computed from all samples and stored inside the INFO line.
+
 record VariantCallingAnnotations {
   // QUAL: Phred-scaled probability of error for this variant call.
   union { null, float }   variantCallErrorProbability = null;
@@ -566,7 +569,7 @@ record Genotype {
    array is equal to the ploidy of the sample at this site. This array may
    reference OtherAlt alleles if this site is multi-allelic in this sample.
    */
-  array<GenotypeAllele> alleles = [];
+  union { null, array<GenotypeAllele> } alleles = null;
 
   /**
    The expected dosage of the alternate allele in this sample.
@@ -579,7 +582,7 @@ record Genotype {
    @see alternateReadDepth
    @see readDepth
    */
-  union { null, int }     referenceReadDepth = null;
+  union { null, int } referenceReadDepth = null;
   /**
    The number of reads that show evidence for this alternate allele at this site.
 
@@ -618,18 +621,18 @@ record Genotype {
 
    @note Analogous to VCF's PL.
    */
-  array<int> genotypeLikelihoods = [];
+  union { null, array<int>} genotypeLikelihoods = null;
   /**
    Phred scaled likelihoods that we have n non-reference alleles at this site.
    The number of elements in this array should be equal to the ploidy at this
    site, plus 1.
    */
-  array<int> nonReferenceLikelihoods = [];
+  union { null, array<int> } nonReferenceLikelihoods = null;
 
   /**
    Component statistics which comprise the Fisher's Exact Test to detect strand bias.
    */
-  array<int> strandBiasComponents = [];
+  union { null, array<int> } strandBiasComponents  = null;
 
   /**
    We split multi-allelic VCF lines into multiple

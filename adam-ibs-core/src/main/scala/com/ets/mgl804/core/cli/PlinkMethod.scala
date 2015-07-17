@@ -9,17 +9,18 @@ package com.ets.mgl804.core.cli
  */
 
 import com.ets.mgl804.core.AppContext
+import com.ets.mgl804.fonctions.MakeBedPersistance.MakeBed
 import com.ets.mgl804.fonctions._
 
 object PlinkMethod {
   val conf = AppContext.conf;
   val sc = AppContext.sc;
-  var fileName = new String()
+  var inputFileName = new String()
   var outputFileName = new String()
 
   // --file
   def file(name:String) {
-    this.fileName = name
+    this.inputFileName = name
   }
 
   // --out
@@ -29,14 +30,14 @@ object PlinkMethod {
 
   // --make-bed
   def makeBed() {
-    val writeLog    = new WriteLog(sc, this.fileName)
-    val importFiles = new MakeBed(sc, this.fileName, writeLog)
+    val writeLog    = new WriteLog(sc, this.inputFileName)
+    val importFiles = new MakeBed(sc, this.inputFileName, writeLog)
 
     if (importFiles.loadData()) {
       // Data loaded correctly
       writeLog.addLogLine("Data load finished with success.")
       importFiles.importRecord.ViewContent
-      importFiles.persistAvro("output3")
+      importFiles.persistAvro(this.outputFileName)
 
     } else {
       // Error in data load
