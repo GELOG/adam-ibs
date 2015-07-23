@@ -19,11 +19,29 @@ Apercu structure des dossiers
 ![image](./WIKI/img/folders-structure.png)
 
 ## Begin with code
-Run LodFile with arguments as following :
+CLI parser is integrated to code.
 
-![image](./WIKI/img/Exemple_Run_Config.png)
+1. View CLI options (--help) :
+
+![image](./WIKI/img/execute/1-execute_help.png)
+
+![image](./WIKI/img/execute/1-response_help.png)
+
+Options Implemented :
+
+ * --help
+ 
+ * --file
+ 
+ * --out
+ 
+ * --make-bed
 
 
-Imported test data content exemple :
+2. Exemple : Execute --make-bed on --file and get a parquet output file --out
 
-![image](./WIKI/img/Exemple_Run_Config_output.png)
+![image](./WIKI/img/execute/2-execute--make-bed.png)
+
+Output parquet files are generated in ./DATA/avro :
+
+![image](./WIKI/img/execute/2-result--make-bed.png)
