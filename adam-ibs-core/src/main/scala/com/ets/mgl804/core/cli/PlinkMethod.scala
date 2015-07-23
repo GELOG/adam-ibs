@@ -11,6 +11,7 @@ package com.ets.mgl804.core.cli
 import com.ets.mgl804.core.AppContext
 import com.ets.mgl804.fonctions.MakeBedPersistance.MakeBed
 import com.ets.mgl804.fonctions._
+import com.ets.mgl804.persistance.ParquetLoader
 
 object PlinkMethod {
   val conf = AppContext.conf;
@@ -32,6 +33,10 @@ object PlinkMethod {
   def makeBed() {
     val writeLog    = new WriteLog(sc, this.inputFileName)
     val importFiles = new MakeBed(sc, this.inputFileName, writeLog)
+    if (this.outputFileName.isEmpty) {
+      this.outputFileName=this.inputFileName
+    }
+    this.outputFileName=this.outputFileName+".makeBed"
 
     if (importFiles.loadData()) {
       // Data loaded correctly
@@ -47,17 +52,23 @@ object PlinkMethod {
   }
 
   // --genome
-  def genome(name:Unit) : Unit = {
+  def genome(name:Unit) {
     println("genome")
+    if (this.outputFileName.isEmpty) {
+      this.outputFileName=this.inputFileName
+    }
+    this.outputFileName=this.outputFileName+".genome"
+    val parquetLoader = new ParquetLoader(this.inputFileName)
+    parquetLoader.showContent()
   }
 
   // --read-genome
-  def readGenome() : Unit = {
+  def readGenome() {
     println("read-genome")
   }
 
   // --cluster
-  def cluster(name:Unit) : Unit = {
+  def cluster(name:Unit) {
     println("cluster")
   }
 }

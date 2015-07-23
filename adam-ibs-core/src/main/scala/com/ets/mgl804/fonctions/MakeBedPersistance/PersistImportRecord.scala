@@ -31,7 +31,7 @@ class PersistImportRecord(importRecord: ImportRecord, filename: String) {
   def persistData() {
     val parquetFilePath = initialiseParqurFile()
     writeToFile(parquetFilePath)
-    //readFromFile(parquetFilePath);
+    readFromFile(parquetFilePath);
   }
 
   // Not used, exemple for reading
@@ -150,7 +150,7 @@ class PersistImportRecord(importRecord: ImportRecord, filename: String) {
 
   def initialiseParqurFile() : Path= {
     //Define the Users and Messages parquet file paths
-    val parquetFilePath:Path = new Path(DATA_PATH, this.fileName+".makeBed.parquet")
+    val parquetFilePath:Path = new Path(DATA_PATH, this.fileName+".parquet")
     //We must make sure that the parquet file(s) are deleted because the following script doesn't replace the file.
     deleteIfExist(parquetFilePath.getName());
     return parquetFilePath;
