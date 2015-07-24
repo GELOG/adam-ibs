@@ -37,6 +37,49 @@
       <groupId>org.apache.spark</groupId>
       <artifactId>spark-core_2.10</artifactId>
       <version>${spark.version}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.slf4j</groupId>
+          <artifactId>slf4j-log4j12</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>log4j</groupId>
+          <artifactId>log4j</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+
+    <!-- SLF4J - API -->
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>1.7.12</version>
+    </dependency>
+
+    <!-- Log4j - SLF4J bridge -->
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>log4j-over-slf4j</artifactId>
+      <version>1.7.12</version>
+    </dependency>
+
+    <!-- logback -->
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <version>1.1.2</version>
+    </dependency>
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-core</artifactId>
+      <version>1.1.2</version>
+    </dependency>
+
+    <!-- Groovy -->
+    <dependency>
+      <groupId>org.codehaus.groovy</groupId>
+      <artifactId>groovy</artifactId>
+      <version>2.4.3</version>
     </dependency>
 
     <!-- Spark SQL -->
@@ -45,13 +88,6 @@
       <artifactId>spark-sql_2.10</artifactId>
       <version>${spark.version}</version>
     </dependency>
-
-    <!-- Hadoop -->
-    <!--<dependency>-->
-      <!--<groupId>org.apache.hadoop</groupId>-->
-      <!--<artifactId>hadoop-client</artifactId>-->
-      <!--<version>${hadoop.version}</version>-->
-    <!--</dependency>-->
 
      <!--Test-->
     <dependency>

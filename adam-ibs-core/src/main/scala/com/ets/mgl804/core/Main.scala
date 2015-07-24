@@ -1,9 +1,10 @@
 package com.ets.mgl804.core
 
+import org.slf4j.LoggerFactory
 import com.ets.mgl804.core.cli._
 
 /**
- * Authors: Khaled Ben Ali et Karen Mou Kui
+ * Authors: Khaled Ben Ali, Karen Mou Kui, Ivan Kizema
  * Date: 15-06-2015
  *
  * Class which implement all methods called with the command line
@@ -11,8 +12,10 @@ import com.ets.mgl804.core.cli._
  */
 
 object Main {
+  private val logger = LoggerFactory.getLogger(this.getClass)
 
   def main(args: Array[String]) {
+    this.logger.info("Begin Main !")
     val conf: ListCommandsPlink = new ListCommandsPlink(args)
     conf.args.foreach(
       arg => {
