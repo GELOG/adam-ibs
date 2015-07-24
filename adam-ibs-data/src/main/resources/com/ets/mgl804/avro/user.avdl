@@ -17,15 +17,17 @@
 
 @namespace("com.ets.mgl804.avrotest")
 protocol AvroSparkSQL {
+    enum Color {
+        Purple, //="Purple";
+        Blue,
+        Orange,
+        Red
+    }
     record User {
-        // The unique user id
         int id = "unknown";
-        // The name of the user
         string name = "unknown";
-        // The age of the user
         int age = 0;
-        // The favorite color of the user
-        string favorite_color = "unknown";
+        union { null, Color } favorite_color = null;
     }
     record Message {
         // The ID of the message

@@ -31,33 +31,15 @@ class PersistImportRecord(importRecord: ImportRecord, filename: String) {
   def persistData() {
     val parquetFilePath = initialiseParqurFile()
     writeToFile(parquetFilePath)
-    readFromFile(parquetFilePath);
-  }
-
-  // Not used, exemple for reading
-  def readFromFile(parquetFilePath:Path) {
-    val individualsDataFrame:DataFrame = sqc.read.parquet(parquetFilePath.toString())
-    System.out.println("******************************************************************");
-    individualsDataFrame.show()
-    System.out.println("******************************************************************");
-    individualsDataFrame.printSchema()
-    System.out.println("******************************************************************");
-    individualsDataFrame.registerTempTable("parquetFile")
-    val sqlSelection = sqc.sql("SELECT * FROM parquetFile WHERE familyId = 1")
-    sqlSelection.show()
-    System.out.println("******************************************************************");
   }
 
   def writeToFile(parquetFilePath:Path) {
-    System.out.println("PersistImportRecord writeToFile()")
     val parquetWriter = new AvroParquetWriter[IndexedRecord](parquetFilePath, Individual.getClassSchema())
 
     // Begin with BIM records (Calculated Variants)
     var variants = scala.collection.mutable.Buffer[Variant]()
     // Load to variants
     this.originalPlinkRecord.bimRecords.foreach(bimRecord => variants.append(createVariant(bimRecord)))
-    // Write to Avro
-    //variants.foreach(variant => parquetWriter.write(variant))
 
     // Begin with FAM records (Individuals)
     var individuals = scala.collection.mutable.Buffer[Individual]()

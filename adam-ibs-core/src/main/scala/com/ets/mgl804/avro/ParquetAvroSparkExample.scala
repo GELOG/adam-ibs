@@ -5,7 +5,7 @@ import org.apache.avro.generic.IndexedRecord
 import org.apache.hadoop.fs.Path
 import org.apache.spark.sql.{DataFrame, SQLContext}
 import org.apache.spark.{SparkConf, SparkContext}
-import com.ets.mgl804.avrotest.{Message, User}
+import com.ets.mgl804.avrotest.{Color, Message, User}
 import org.bdgenomics.formats.avro.{Variant, Genotype}
 import parquet.avro.AvroParquetWriter
 
@@ -26,6 +26,7 @@ object ParquetAvroSparkExample {
 
     //Create a Spark Context and wrap it inside a SQLContext
     sqc = new SQLContext(new SparkContext(conf))
+    sqc.sql("SET spark.sql.parquet.binaryAsString=true")
 
     //genotype_test()
     userAndMessages_test()
@@ -61,7 +62,8 @@ object ParquetAvroSparkExample {
     {
       parquetWriter.write(createUser(i))
     }
-
+    println(createUser(10).getSchema)
+    println(createUser(10).getFavoriteColor)
     parquetWriter.close()
   }
 
@@ -106,8 +108,17 @@ object ParquetAvroSparkExample {
       .show()
 
     println("******************************************************************");
+    usersMessagesDataFrame.select("favorite_color")
+      .show()
+
     println("******************************************************************");
-    println("")
+//    usersMessagesDataFrame.select("favorite_color")
+//      .foreach(color => println(color.asInstanceOf[Color]))
+//    println(Color.getClassSchema.getEnumSymbols)
+
+    println("******************************************************************");
+    //usersMessagesDataFrame.select("favorite_color").collect()
+    println("******************************************************************");
   }
 
   /**
@@ -126,7 +137,7 @@ object ParquetAvroSparkExample {
   {
     val r = scala.util.Random
     val age:Int = 18 + r.nextInt(100-18)//we want users between 18 and 100 years old
-  val color:String = if(idx % 5 == 0) "purple" else if(idx % 3 == 0) "blue" else if(idx % 2 == 0) "orange" else "red"
+    val color:Color = if(idx % 5 == 0) Color.Purple else if(idx % 3 == 0) Color.Blue else if(idx % 2 == 0) Color.Orange else Color.Red
 
     return User.newBuilder()
       .setId(idx)
