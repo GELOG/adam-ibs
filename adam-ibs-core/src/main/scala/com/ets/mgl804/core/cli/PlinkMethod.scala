@@ -1,7 +1,7 @@
 package com.ets.mgl804.core.cli
 
 /**
- * Authors: Khaled Ben Ali et Karen Mou Kui
+ * Authors: Khaled Ben Ali, Karen Mou Kui, Ivan Kizema
  * Date: 15-06-2015
  *
  * Class which implement all methods called with the command line
@@ -10,29 +10,32 @@ package com.ets.mgl804.core.cli
 
 import com.ets.mgl804.core.AppContext
 import com.ets.mgl804.fonctions.MakeBedPersistance.MakeBed
-import com.ets.mgl804.fonctions._
 import com.ets.mgl804.persistance.ParquetLoader
+import org.slf4j.LoggerFactory
 
 object PlinkMethod {
-  val conf = AppContext.conf;
-  val sc = AppContext.sc;
-  var inputFileName = new String()
-  var outputFileName = new String()
+  private val logger = LoggerFactory.getLogger(this.getClass)
+  private val conf = AppContext.conf;
+  private val sc = AppContext.sc;
+  private var inputFileName = new String()
+  private var outputFileName = new String()
 
   // --file
   def file(name:String) {
     this.inputFileName = name
+    logger.info("--file : "+this.inputFileName)
   }
 
   // --out
   def out(name:String) {
     this.outputFileName = name
+    logger.info("--out : "+this.inputFileName)
   }
 
   // --make-bed
   def makeBed() {
-    val writeLog    = new WriteLog(sc, this.inputFileName)
-    val importFiles = new MakeBed(sc, this.inputFileName, writeLog)
+    logger.info("--make-bed")
+    val importFiles = new MakeBed(sc, this.inputFileName)
     if (this.outputFileName.isEmpty) {
       this.outputFileName=this.inputFileName
     }
@@ -40,35 +43,35 @@ object PlinkMethod {
 
     if (importFiles.loadData()) {
       // Data loaded correctly
-      writeLog.addLogLine("Data load finished with success.")
-      importFiles.importRecord.ViewContent
+      logger.info("--make-bed :Data load finished with success.")
+      //importFiles.importRecord.ViewContent
       importFiles.persistAvro(this.outputFileName)
 
     } else {
       // Error in data load
-      writeLog.addLogLine("ERROR : Data load failed.")
+      logger.error("--make-bed : Data load failed !")
     }
     sc.stop()
   }
 
   // --genome
   def genome(name:Unit) {
-    println("genome")
+    logger.info("--genome")
     if (this.outputFileName.isEmpty) {
       this.outputFileName=this.inputFileName
     }
     this.outputFileName=this.outputFileName+".genome"
     val parquetLoader = new ParquetLoader(this.inputFileName)
-    parquetLoader.showContent()
+    //parquetLoader.showContent()
   }
 
   // --read-genome
   def readGenome() {
-    println("read-genome")
+    logger.info("--read-genome")
   }
 
   // --cluster
   def cluster(name:Unit) {
-    println("cluster")
+    logger.info("--read-genome")
   }
 }

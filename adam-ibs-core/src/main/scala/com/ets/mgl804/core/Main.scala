@@ -15,7 +15,9 @@ object Main {
   private val logger = LoggerFactory.getLogger(this.getClass)
 
   def main(args: Array[String]) {
-    this.logger.info("Begin Main !")
+    var argumentString = "arguments : "
+    args.foreach(argument => argumentString = argumentString + argument + " ")
+    this.logger.info("Begin with " + argumentString)
     val conf: ListCommandsPlink = new ListCommandsPlink(args)
     conf.args.foreach(
       arg => {

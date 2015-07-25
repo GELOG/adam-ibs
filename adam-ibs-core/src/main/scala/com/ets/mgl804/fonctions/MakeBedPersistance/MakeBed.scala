@@ -1,17 +1,17 @@
 package com.ets.mgl804.fonctions.MakeBedPersistance
 
 import com.ets.mgl804.data.{BimRecord, FamRecord, ImportRecord, SpnFamBase}
-import com.ets.mgl804.fonctions.WriteLog
 import org.apache.spark.SparkContext
+import org.slf4j.LoggerFactory
 
 /**
- * Created by ikizema on 15-06-05.
+ * Created by Ivan Kizema on 15-06-05.
  */
-class MakeBed(sc : SparkContext, fileToLoad: String, loging : WriteLog) {
-  val textFileMap = sc.textFile(fileToLoad + ".map")
-  val textFilePed = sc.textFile(fileToLoad + ".ped")
-  val writeLog = loging
-  val importRecord = new ImportRecord()
+class MakeBed(sc : SparkContext, fileToLoad: String) {
+  private val logger = LoggerFactory.getLogger(this.getClass)
+  private val textFileMap = sc.textFile(fileToLoad + ".map")
+  private val textFilePed = sc.textFile(fileToLoad + ".ped")
+  private val importRecord = new ImportRecord()
 
   def loadData() : Boolean = {
     var dataCorrect = true
@@ -22,13 +22,13 @@ class MakeBed(sc : SparkContext, fileToLoad: String, loging : WriteLog) {
     if (variantsFound<0) {
       dataCorrect=false
     } else {
-      writeLog.addLogLine("Variants found : "+variantsFound.toString+".")
+      logger.debug("Variants found : "+variantsFound.toString+".")
     }
     // Check .ped
     if (individualsFound < 0) {
       dataCorrect=false
     } else {
-      writeLog.addLogLine("Individuals found : "+individualsFound.toString+".")
+      logger.debug("Individuals found : "+individualsFound.toString+".")
     }
 
     this.importRecord.computeBimAlleles()
@@ -56,7 +56,7 @@ class MakeBed(sc : SparkContext, fileToLoad: String, loging : WriteLog) {
       } else if (lineMap(0) == "") {
         // not count 1st char
         if (lineMap.length != 5) {
-          writeLog.addLogLine("ERROR : .map file line " + (lineMapNum + 1))
+          logger.error(".map file line " + (lineMapNum + 1))
           return -1
         } else {
           numberVariants = numberVariants + 1
@@ -64,7 +64,7 @@ class MakeBed(sc : SparkContext, fileToLoad: String, loging : WriteLog) {
         }
       } else {
         if (lineMap.length != 4) {
-          writeLog.addLogLine("ERROR : .map file line " + lineMapNum)
+          logger.error(".map file line " + lineMapNum)
           return -1
         } else {
           numberVariants = numberVariants + 1
@@ -100,7 +100,7 @@ class MakeBed(sc : SparkContext, fileToLoad: String, loging : WriteLog) {
         if (numberSPNs == -1) {
           numberSPNs = numberSPNsIndividial
         } else if(numberSPNs != numberSPNsIndividial) {
-          writeLog.addLogLine("ERROR : Not same number of SPNs Individual in .ped file line " + lineNum)
+          logger.error("Not same number of SPNs Individual in .ped file line " + lineNum)
           return Array(-1,-1)
         }
         //numberIndividuals = numberIndividuals + 1

@@ -6,17 +6,19 @@ import com.ets.mgl804.core.AppContext
 import com.ets.mgl804.data._
 import org.apache.avro.generic.IndexedRecord
 import org.apache.hadoop.fs.Path
-import org.apache.spark.sql.{DataFrame, SQLContext}
+import org.apache.spark.sql.SQLContext
 import org.bdgenomics.formats.avro._
-import parquet.avro.{AvroParquetReader, AvroParquetWriter}
+import org.slf4j.LoggerFactory
+import parquet.avro.AvroParquetWriter
 
 import scala.collection.JavaConverters._
 
 /**
- * Created by ikizema on 15-07-03.
+ * Created by Ivan Kizema on 15-07-03.
  */
 class PersistImportRecord(importRecord: ImportRecord, filename: String) {
   //This is the path where Parquet files will be created
+  private val logger = LoggerFactory.getLogger(this.getClass)
   private val originalPlinkRecord = importRecord
   private val DATA_PATH = "DATA/avro/"
   private val fileName = filename
@@ -126,7 +128,7 @@ class PersistImportRecord(importRecord: ImportRecord, filename: String) {
     }
     individual.setGenotype(individualGenotype.toList.asJava)
 
-    System.out.println(individual.toString())
+    //logger.debug(individual.toString())
     return individual;
   }
 

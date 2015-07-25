@@ -2,8 +2,7 @@ package com.ets.mgl804.data
 
 import com.ets.mgl804.data.operations.{Encoder, Converter, Bin}
 import org.bdgenomics.formats.avro.Base
-
-import scala.math.pow
+import org.slf4j.LoggerFactory
 
 /**
  * Created by ikizema on 15-05-24 : ivan.kizema at gmail.com
@@ -39,39 +38,6 @@ class FamRecord(famRecord: Array[String]) {
     return this.phenotype
   }
 }
-
-// #### Obsolete, remplacé par SpnFamBase
-//class SPNforFam() {
-//  var spnRecords = scala.collection.mutable.Buffer[Array[String]]()
-//  def addSPN(spnRecord: Array[String]) {
-//    // Code : 1,2,3,4 = A,C,G,T and 0 -> Missing
-//    var spnUnified = Array("0","0")
-//    for (i <- 0 to 1) {
-//      spnUnified(i) = spnRecord(i) match {
-//        case "0" => "0"
-//        case "1" => "A"
-//        case "2" => "C"
-//        case "3" => "G"
-//        case "4" => "T"
-//        case "A" => "A"
-//        case "C" => "C"
-//        case "G" => "G"
-//        case "T" => "T"
-//        case _ =>  "-1"       // Error in data
-//      }
-//    }
-//    //this.spnRecords.append(Array(spnRecord(0), spnRecord(1)))     // Original Data
-//    this.spnRecords.append(spnUnified)                              // Normalised Data
-//  }
-//  def getSpnNum(position:Int): Array[String] = {
-//    return this.spnRecords(position)
-//  }
-//  def GenerateString: String = {
-//    var output = ""
-//    this.spnRecords.foreach(rec => output = output + rec(0) + rec(1) + " ")
-//    return output
-//  }
-//}
 
 // New SPNforFam using Enum base
 class SpnFamBase() {
@@ -177,6 +143,7 @@ class BimRecord(mapRecord: Array[String]) {
 }
 
 class ImportRecord() {
+  private val logger = LoggerFactory.getLogger(this.getClass)
   var bedRecord = new BedRecordBibary()
   var bimRecords = scala.collection.mutable.Buffer[BimRecord]()
   var famRecords = scala.collection.mutable.Buffer[FamRecord]()
@@ -187,14 +154,13 @@ class ImportRecord() {
   }
 
   def ViewContent() = {
-    //println("Bed Binary Records : " + this.bedRecord.bedRecordBinary.length)
     this.bedRecord.viewContent()
-    println("Fam Records : " + this.famRecords.length)
-    this.famRecords.foreach(record => println(record.GenerateString))
-    println("SPNs : " + this.spnForFams.length)
-    this.spnForFams.foreach(record => println(record.GenerateString))
-    println("Bim Records : " + this.bimRecords.length)
-    this.bimRecords.foreach(record => println(record.GenerateString))
+    logger.debug("Fam Records : " + this.famRecords.length)
+    this.famRecords.foreach(record => logger.debug(record.GenerateString))
+    logger.debug("SPNs : " + this.spnForFams.length)
+    this.spnForFams.foreach(record => logger.debug(record.GenerateString))
+    logger.debug("Bim Records : " + this.bimRecords.length)
+    this.bimRecords.foreach(record => logger.debug(record.GenerateString))
   }
   // Calculation Alleles in the Bim File (A1 and A2)
   def computeBimAlleles() {
@@ -295,6 +261,7 @@ class ImportRecord() {
 }
 
 class BedRecordBibary() {
+  private val logger = LoggerFactory.getLogger(this.getClass)
   var bedRecordBinary = scala.collection.mutable.Buffer[Byte]()
   // The first three bytes are the magic number.
   bedRecordBinary.append(0x6c)
@@ -309,8 +276,8 @@ class BedRecordBibary() {
     this.bedRecordBinary.toArray.toString
   }
   def viewContent() {
-    println("Bed Writed Bytes : " + (this.bedRecordBinary.length-3))
-    println(Bin.valueOf(bedRecordBinary))
+    logger.debug("Bed Writed Bytes : " + (this.bedRecordBinary.length-3))
+    logger.debug(Bin.valueOf(bedRecordBinary).toString)
   }
   def addBytesForVariant(bytesForVariant : Array[Byte]) {
     bytesForVariant.foreach(byte => this.bedRecordBinary.append(byte))
