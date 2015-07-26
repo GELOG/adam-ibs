@@ -21,6 +21,7 @@ class Genome(filename:String) {
           .setIndividual1(listIndividuals(individual1))
           .setIndividual2(listIndividuals(individual2))
           .setRelationType(getIbdIbdRelationType(listIndividuals(individual1),listIndividuals(individual2)))
+          .setIbdExpectedValue(getIbdExpectedValue(listIndividuals(individual1),listIndividuals(individual2)))
           .build()
         this.listPairwiseIbaIbd.append(pairwiseIbsIbd)
       }
@@ -44,7 +45,6 @@ class Genome(filename:String) {
 //      b.IDPAT == a.IID || b.IDMAT == a.IID )
 //      retourner "PO"
 //    retourner "OT"
-
     if (individual1.getFamilyId != individual2.getFamilyId) {
       return IbdIbdRelationType.UN
     }
@@ -67,12 +67,26 @@ class Genome(filename:String) {
     }
   }
 
-//  def getIbdIbdRelationType2(individual1:Individual, individual2:Individual) : IbdIbdRelationType = {
-//    var ibdIbdRelationType = new IbdIbdRelationType()
-//
-//
-//    return ibdIbdRelationType
-//  }
+  def getIbdExpectedValue(individual1:Individual, individual2:Individual): Double = {
+    // Référence dans le code source Plink1.07: fichier cfamily.cpp, la fonction genrel() à la ligne 49
+    var ibdExpectedValue = 0
+    // Specific Cases
+    if(individual1==individual2) {
+      return 1
+    }
+    if(individual1.getFamilyId != individual2.getFamilyId) {
+      return 0
+    }
+    if(individual1.getPaternalId!=individual2.getPaternalId &&
+      individual1.getMaternalId!=individual2.getMaternalId &&
+      individual1.getPaternalId!=individual2.getMaternalId &&
+      individual1.getMaternalId!=individual2.getPaternalId ) {
+      return 0
+    }
+    // ToDo : ibdExpectedValue calculation here
+
+    return ibdExpectedValue
+  }
 
   def viewContent() {
     logger.debug("Loaded PairwiseIbsIbd : "+this.listPairwiseIbaIbd.length)
@@ -80,6 +94,6 @@ class Genome(filename:String) {
     this.listPairwiseIbaIbd.foreach(item => logger.debug("FID1 "+
       item.getIndividual1.getFamilyId+" IID1 "+item.getIndividual1.getIndividualId+
       " FID2 "+ item.getIndividual2.getFamilyId+" IID2 "+item.getIndividual2.getIndividualId +
-      " RT "+item.getRelationType))
+      " RT "+item.getRelationType+" EZ "+item.getIbdExpectedValue))
   }
 }

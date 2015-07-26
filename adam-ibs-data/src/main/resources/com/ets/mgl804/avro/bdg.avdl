@@ -826,7 +826,7 @@ record PairwiseIbsIbd {
   union { null, Individual } individual1 = null;
   union { null, Individual } individual2 = null;
   union { null, IbdIbdRelationType } relationType = null;
-  union { null, int } ibdExpectedValue = null;
+  union { null, double } ibdExpectedValue = null;
   union { null, double } z0 = null;
   union { null, double } z1 = null;
   union { null, double } z2 = null;
