@@ -1,18 +1,20 @@
 package com.ets.mgl804.persistance
 
 import com.ets.mgl804.core.AppContext
-import org.apache.avro.generic.{IndexedRecord, GenericRecord}
-import org.apache.avro.specific.SpecificDatumReader
+import org.apache.avro.Schema
+import org.apache.avro.generic.IndexedRecord
 import org.apache.hadoop.fs.Path
 import org.apache.spark.sql.{DataFrame, SQLContext}
 import org.bdgenomics.formats.avro._
-import parquet.avro.{AvroParquetWriter, AvroParquetReader}
+import org.slf4j.LoggerFactory
+import parquet.avro.{AvroReadSupport, AvroParquetReader}
 
 
 /**
- * Created by ikizema on 17/07/15.
+ * Created by Ivan Kizema on 17/08/25.
  */
-class ParquetLoader(filename:String) {
+class ParquetLoader[T](filename:String) {
+  private val logger = LoggerFactory.getLogger(this.getClass)
   private val DATA_PATH = "DATA/avro/"
   private val fileName = filename
   private val conf = AppContext.conf
@@ -20,45 +22,44 @@ class ParquetLoader(filename:String) {
   private val sqc = new SQLContext(sc)
   sqc.sql("SET spark.sql.parquet.binaryAsString=true")
   private val parquetFilePath:Path = new Path(this.fileName)
-  private val individualsDataFrame:DataFrame = sqc.read.parquet(parquetFilePath.toString())
-
+  private var loadedData = scala.collection.mutable.Buffer[T]()
 
   def showContent(): Unit = {
-    System.out.println("******************************************************************");
-//    val individualsDataFrame:DataFrame = sqc.read.parquet(parquetFilePath.toString())
-//    individualsDataFrame.printSchema()
-//    individualsDataFrame.show()
-
-    System.out.println("******************************************************************");
+    logger.debug("******************************************************************")
+    val individualsDataFrame:DataFrame = sqc.read.parquet(parquetFilePath.toString())
+    individualsDataFrame.printSchema()
+    individualsDataFrame.show()
+    logger.debug("******************************************************************")
     val parquetReader = new AvroParquetReader[IndexedRecord](parquetFilePath)
     val individual:Individual = parquetReader.read().asInstanceOf[Individual]
     val individual2:Individual = parquetReader.read().asInstanceOf[Individual]
-    System.out.println(individual.getIndividualId)
-    System.out.println(individual2.getGenotype)
-
-//    val individual = individualsDataFrame.first().getAs[Individual](1)
-//    individuals.foreach(row => System.out.println(row.asInstanceOf[Individual].toString))
-//    System.out.println()
-
-
-//    val reader: AvroParquetReader[GenericRecord] = new AvroParquetReader[GenericRecord](parquetFilePath)
-//    val individual = reader.asInstanceOf[Individual]
-//    System.out.println(individual)
-//
-//    val nextRecord: GenericRecord = reader.read()
-//    System.out.println(nextRecord.toString)
-////    val nextRecord: GenericRecord = reader.read()
-////    System.out.println(nextRecord.toString)
-//    System.out.println("******************************************************************");
-//    val individual = nextRecord.get(0).asInstanceOf[Individual]
-//    System.out.println(individual.toString)
-
-    System.out.println("******************************************************************");
-
-//    val reader = new SpecificDatumReader[Individual](scala.reflect.classTag[Individual].runtimeClass.asInstanceOf[Class[Individual]])
-//    val reads = ac.loadAlignments(
-
-    System.out.println("******************************************************************");
+    logger.debug(individual.getIndividualId.toString)
+    logger.debug(individual2.getGenotype.toString)
+    logger.debug("******************************************************************")
+    logger.debug(parquetReader.read().getClass.toString)
   }
 
+  def test() {
+    loadData()
+    viewLoadedContent()
+  }
+
+  def loadData() : scala.collection.mutable.Buffer[T] = {
+    val parquetReader = new AvroParquetReader[IndexedRecord](parquetFilePath)
+    try {
+      this.loadedData.append(parquetReader.read().asInstanceOf[T])
+      while (this.loadedData.last != null) {
+        this.loadedData.append(parquetReader.read().asInstanceOf[T])
+      }
+      this.loadedData.remove(this.loadedData.length-1)
+      parquetReader.close()
+    }
+    logger.info("Loaded "+this.loadedData(0).getClass.toString+" : "+this.loadedData.length)
+    return this.loadedData
+  }
+
+  def viewLoadedContent() {
+    logger.debug("Loaded "+this.loadedData(0).getClass.toString+" : "+this.loadedData.length)
+    this.loadedData.foreach(item => logger.debug(item.toString))
+  }
 }

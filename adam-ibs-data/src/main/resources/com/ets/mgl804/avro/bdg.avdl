@@ -800,6 +800,11 @@ enum Sex {
 }
 
 enum IbdIbdRelationType {
+//    UN: unrelated
+//    FS: sibling
+//    HS: half-sibling
+//    PO: parent-offspring
+//    OT: other
   UN,
   FS,
   HS,

@@ -10,7 +10,7 @@ package com.ets.mgl804.core.cli
 
 import com.ets.mgl804.core.AppContext
 import com.ets.mgl804.fonctions.MakeBedPersistance.MakeBed
-import com.ets.mgl804.persistance.ParquetLoader
+import com.ets.mgl804.fonctions.Genome.Genome
 import org.slf4j.LoggerFactory
 
 object PlinkMethod {
@@ -61,8 +61,9 @@ object PlinkMethod {
       this.outputFileName=this.inputFileName
     }
     this.outputFileName=this.outputFileName+".genome"
-    val parquetLoader = new ParquetLoader(this.inputFileName)
-    //parquetLoader.showContent()
+    val genomeColculations = new Genome(this.inputFileName)
+    genomeColculations.computeData()
+    genomeColculations.viewContent()
   }
 
   // --read-genome
