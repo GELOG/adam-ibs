@@ -1,6 +1,6 @@
 package com.ets.mgl804.fonctions.Genome
 
-import com.ets.mgl804.persistance.ParquetLoader
+import com.ets.mgl804.persistance.{ParquetWriter, ParquetLoader}
 import org.bdgenomics.formats.avro.{IbdIbdRelationType, Individual, PairwiseIbsIbd}
 import org.slf4j.LoggerFactory
 
@@ -27,6 +27,11 @@ class Genome(filename:String) {
       }
     }
     logger.info("Loaded PairwiseIbsIbd : "+this.listPairwiseIbaIbd.length)
+  }
+
+  def persistData(filename:String) {
+    val parquetWriter = new ParquetWriter[PairwiseIbsIbd](this.listPairwiseIbaIbd, filename)
+    parquetWriter.persistData()
   }
 
   def getIbdIbdRelationType(individual1:Individual, individual2:Individual) : IbdIbdRelationType = {

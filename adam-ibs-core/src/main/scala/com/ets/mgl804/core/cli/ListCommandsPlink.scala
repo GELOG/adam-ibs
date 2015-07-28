@@ -43,6 +43,12 @@ class ListCommandsPlink(arguments: Seq[String]) extends ScallopConf(arguments) {
     descr = "Command can directly read compressed file"
   );
 
+  val showParquet = opt[Boolean](
+    "show-parquet",
+    noshort = true,
+    descr = "Show shema and data sample ostored in a parquet file"
+  );
+
   val cluster = opt[Boolean](
     "cluster",
     noshort = true,

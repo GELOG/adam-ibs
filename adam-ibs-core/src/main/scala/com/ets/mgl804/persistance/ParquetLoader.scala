@@ -1,7 +1,6 @@
 package com.ets.mgl804.persistance
 
 import com.ets.mgl804.core.AppContext
-import org.apache.avro.Schema
 import org.apache.avro.generic.IndexedRecord
 import org.apache.hadoop.fs.Path
 import org.apache.spark.sql.{DataFrame, SQLContext}
@@ -15,7 +14,6 @@ import parquet.avro.{AvroReadSupport, AvroParquetReader}
  */
 class ParquetLoader[T](filename:String) {
   private val logger = LoggerFactory.getLogger(this.getClass)
-  private val DATA_PATH = "DATA/avro/"
   private val fileName = filename
   private val conf = AppContext.conf
   private val sc = AppContext.sc
@@ -39,9 +37,10 @@ class ParquetLoader[T](filename:String) {
     logger.debug(parquetReader.read().getClass.toString)
   }
 
-  def test() {
-    loadData()
-    viewLoadedContent()
+  def showSchema() {
+    val inputDataFrame:DataFrame = sqc.read.parquet(parquetFilePath.toString())
+    inputDataFrame.printSchema()
+    inputDataFrame.show(10)
   }
 
   def loadData() : scala.collection.mutable.Buffer[T] = {

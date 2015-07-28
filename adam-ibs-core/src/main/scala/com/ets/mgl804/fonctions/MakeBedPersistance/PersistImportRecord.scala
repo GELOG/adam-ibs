@@ -133,9 +133,7 @@ class PersistImportRecord(importRecord: ImportRecord, filename: String) {
   }
 
   def initialiseParqurFile() : Path= {
-    //Define the Users and Messages parquet file paths
     val parquetFilePath:Path = new Path(DATA_PATH, this.fileName+".parquet")
-    //We must make sure that the parquet file(s) are deleted because the following script doesn't replace the file.
     deleteIfExist(parquetFilePath.getName());
     return parquetFilePath;
   }
