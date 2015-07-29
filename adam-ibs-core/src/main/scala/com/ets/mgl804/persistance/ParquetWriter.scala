@@ -13,10 +13,11 @@ import parquet.avro.AvroParquetWriter
 /**
  * Created by ikizema on 15-07-28.
  */
-class ParquetWriter[T](data:scala.collection.mutable.Buffer[T], filename:String) {
+class ParquetWriter[T](data:scala.collection.mutable.Buffer[T], filename:String, avroSchemaInput:Schema) {
   private val logger = LoggerFactory.getLogger(this.getClass)
   private val DATA_PATH = "DATA/avro/"
   private val fileName = filename
+  private val avroSchema = avroSchemaInput
   private val conf = AppContext.conf
   private val sc = AppContext.sc
   private val sqc = new SQLContext(sc)
@@ -28,24 +29,8 @@ class ParquetWriter[T](data:scala.collection.mutable.Buffer[T], filename:String)
     writeToFile(parquetFilePath)
   }
 
-  def getClassSchema() : Schema = {
-    if (this.dataToPersist(0).isInstanceOf[Individual]) {
-      logger.debug("ClassSchema : "+Individual.getClassSchema.getFullName())
-      return Individual.getClassSchema
-    }
-    if (this.dataToPersist(0).isInstanceOf[PairwiseIbsIbd]) {
-      logger.debug("ClassSchema : "+PairwiseIbsIbd.getClassSchema.getFullName())
-      return PairwiseIbsIbd.getClassSchema
-    }
-    if (this.dataToPersist(0).isInstanceOf[Variant]) {
-      logger.debug("ClassSchema : "+Variant.getClassSchema.getFullName())
-      return Variant.getClassSchema
-    }
-    return null
-  }
-
   def writeToFile(parquetFilePath:Path) {
-    val parquetWriter = new AvroParquetWriter[IndexedRecord](parquetFilePath, this.getClassSchema)
+    val parquetWriter = new AvroParquetWriter[IndexedRecord](parquetFilePath, avroSchema)
     for (itemNb <- 0 to this.dataToPersist.length-1) {
       parquetWriter.write(this.dataToPersist(itemNb).asInstanceOf[IndexedRecord])
     }

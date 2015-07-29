@@ -30,7 +30,7 @@ class Genome(filename:String) {
   }
 
   def persistData(filename:String) {
-    val parquetWriter = new ParquetWriter[PairwiseIbsIbd](this.listPairwiseIbaIbd, filename)
+    val parquetWriter = new ParquetWriter[PairwiseIbsIbd](this.listPairwiseIbaIbd, filename, PairwiseIbsIbd.getClassSchema)
     parquetWriter.persistData()
   }
 
