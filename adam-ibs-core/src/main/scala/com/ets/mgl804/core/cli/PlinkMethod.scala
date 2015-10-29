@@ -73,10 +73,11 @@ object PlinkMethod {
     logger.info("--show-parquet")
     val parquetInput = new ParquetLoader(this.inputFileName)
     parquetInput.showSchema()
+//    parquetInput.viewLoadedContent()
   }
 
   // --cluster
-  def cluster(name:Unit) {
-    logger.info("--read-genome")
-  }
+//  def cluster(name:Unit) {
+//    logger.info("--read-genome")
+//  }
 }

@@ -2,7 +2,7 @@ package com.ets.mgl804.core.cli
 
 import org.rogach.scallop._
 /**
- * Authors: Khaled Ben Ali et Karen Mou Kui
+ * Authors: Khaled Ben Ali, Karen Mou Kui, Ivan Kizema
  * Date: 15-06-2015
  * Class declaring all implemented commands
  * See https://github.com/scallop/scallop for more explication about the CLI parser
@@ -28,32 +28,32 @@ class ListCommandsPlink(arguments: Seq[String]) extends ScallopConf(arguments) {
   val makeBed  = opt[Boolean](
     "make-bed",
     noshort = true,
-    descr = "Create a new binary fileset. Specify .ped and .map files"
+    descr = "Create a new binary fileset. Specify .ped and .map files [needs --file and --out]"
   );
 
   val genome = opt[Boolean](
     "genome",
      noshort = true,
-     descr = "Calculate IBS distances between all individuals"
+     descr = "Calculate IBS distances between all individuals [needs --file and --out]"
   );
 
-  val readGenome = opt[Boolean](
-    "read-genome",
-    noshort = true,
-    descr = "Command can directly read compressed file"
-  );
+//  val readGenome = opt[Boolean](
+//    "read-genome",
+//    noshort = true,
+//    descr = "Command can directly read compressed file"
+//  );
 
   val showParquet = opt[Boolean](
     "show-parquet",
     noshort = true,
-    descr = "Show shema and data sample ostored in a parquet file"
+    descr = "Show shema and data sample ostored in a parquet file [needs --file]"
   );
 
-  val cluster = opt[Boolean](
-    "cluster",
-    noshort = true,
-    descr = "Cluster samples using a pairwise similarity statistic (normally IBS)"
-  );
+//  val cluster = opt[Boolean](
+//    "cluster",
+//    noshort = true,
+//    descr = "Cluster samples using a pairwise similarity statistic (normally IBS)"
+//  );
 
   val help = opt[Int](
     "help",

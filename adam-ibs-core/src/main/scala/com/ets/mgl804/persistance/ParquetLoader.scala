@@ -17,8 +17,7 @@ class ParquetLoader[T](filename:String) {
   private val fileName = filename
   private val conf = AppContext.conf
   private val sc = AppContext.sc
-  private val sqc = new SQLContext(sc)
-  sqc.sql("SET spark.sql.parquet.binaryAsString=true")
+  private val sqc = AppContext.sqc
   private val parquetFilePath:Path = new Path(this.fileName)
   private var loadedData = scala.collection.mutable.Buffer[T]()
 

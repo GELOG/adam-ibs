@@ -5,77 +5,61 @@
 
 This project ports the IBS/MDS/IBD functionality of PLink to Spark / ADAM.
 
-
 ## Getting started
 Checkout our [wiki](https://github.com/GELOG/adam-ibs/wiki)
 
-## Requis :
-Mac : Java 1.6
+## Requirements
+JDK 1.7
 
-Linux : Java 1.7
+Scala 2.10.x
 
-Scala : 2.10
+## Project organisation
+adam-ibs is composed of modules adam-ibs-core and adam-ibs-data.
 
-## Begin with code
+adam-ibs-data define the used avro data model. This module needs to be builded in order to be used in adam-ibs-core module as a .jar dependence.
+
+adam-ibs-core include logic and lci and uses adam-ibs-data jar dependency.
+
+## Build
+The project can be built by executing "maven clean compile install" from the root folder or in two following steps :
+
+1. In adam-ibs-data folder : maven clean compile install
+ * You will obtain both adam-ibs-data-0.1.0.jar which is used as maven dependency in adam-ibs-core.
+
+2. In adam-ibs-code folder : maven clean compile install
+ * You will obtain 2 jar files :  
+  * adam-ibs-core-0.1.0.jar -> jar file containing adam-ibs-core code
+  * adam-ibs-core-0.1.0-jar-with-dependencies.jar -> jar file containing adam-ibs-core code with all dependencies.
+
+## Execute from shell
+**From adam-ibs-core folder :**
+
+Help :
+
+    adam-ibs-core$ java -jar target/adam-ibs-core-0.1.0-jar-with-dependencies.jar -h
+    21:01:07.849 [main] [INFO ] [c.e.m.c.Main$] : Begin with arguments : -h 
+        --file  <name>   Specify .ped + .map filename prefix (default 'plink')
+        --genome         Calculate IBS distances between all individuals [needs
+                       --file and --out]
+        --make-bed       Create a new binary fileset. Specify .ped and .map files [required --file and --out]
+        --out  <name>    Specify the output filename
+        --show-parquet   Show Schema and data sample stored in a parquet file [required --file]
+    -h, --help  <arg>    Show help message
+
+Execute with spark-submit :
+    
+    spark-1.4.1/bin$ ./spark-submit --master local /home/ikizema/DEV/mgl804/adam-ibs/adam-ibs-core/target/adam-ibs-core-0.1.0-jar-with-dependencies.jar --file /home/ikizema/DEV/mgl804/adam-ibs/DATA/avro/test.makeBed.parquet --show-parquet
+
+
+## Execute from IDEA IDE
 CLI parser is integrated to code.
 
 1. View CLI options (--help) :
-
 ![image](./WIKI/img/execute/1-execute_help.png)
-
 ![image](./WIKI/img/execute/1-response_help.png)
 
-Options Implemented :
-
- * --help
- 
- * --file
- 
- * --out
- 
- * --make-bed
-
-
 2. Exemple : Execute --make-bed on --file and get a parquet output file --out
-
 ![image](./WIKI/img/execute/2-execute--make-bed.png)
 
 Output parquet files are generated in ./DATA/avro :
-
 ![image](./WIKI/img/execute/2-result--make-bed.png)
-
-
-## Logging
-Nous utilisons logback pour le logging. Loggback est le successeur du populaire log4j qui n'est plus supporté.
-Logback est composé de 3 composants : 
-
- * logback-core
- 
- * logback-classic (qui est une implementation de SLF4J et une amelioaration de log4j)
- 
- * logback-access (pour utilisation evelouée)
-
-Pour utiliser logback pour scala dans un projet maven, il faut ajouter la dependance logback-core. Cette dependance incluera les packages suivants : logback-classic, log4j, slf4j
-
-NB : Il faut absoulment exclure le package sl4j du package apache.spark, la raison est que apache.spark utilise slf4j, lequel est utilisé egalement par logback.
-
-Utilisation : 
-import org.slf4j.LoggerFactory // importer le package
-
-def logb = LoggerFactory.getLogger(this.getClass()) // creer une instance, pour la classe a loguer
- 
-logb.info("hello world") // loguer avec level INFO
-
-Il y a 5 level, qui sont dans l'ordre  Trace, Debug, Info, Warn, Error
-
-Il faut creer un fichier config : src/scala/ressources/logback.xml, dans lequel on defint :
- 
- * l'appender : la sortie : console, fichier, ou autre
- 
- * layout : affichage
- 
- * level.
- 
-Pour le level, on peut definir un niveau minimum a logguer. Exemple, si on décide que le niveau le plus bas est : INFO, donc tous les log de type : Debug, Trace, ne seront pas affichés
-
-On peut egalement, desactivé les log pour un package en particulier

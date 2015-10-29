@@ -27,7 +27,7 @@ object Main {
             case "--out" => PlinkMethod.out(conf.out())
             case "--make-bed" => PlinkMethod.makeBed()
             case "--genome" => PlinkMethod.genome(conf.genome())
-            case "--cluster" => PlinkMethod.cluster(conf.cluster())
+//            case "--cluster" => PlinkMethod.cluster(conf.cluster())
             case "--show-parquet" => PlinkMethod.showParquet()
             case _ => println(conf.help)
           }
