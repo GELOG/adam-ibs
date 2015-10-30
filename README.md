@@ -21,7 +21,7 @@ adam-ibs-data define the used avro data model. This module needs to be builded i
 adam-ibs-core include logic and lci and uses adam-ibs-data jar dependency.
 
 ## Build
-The project can be built by executing "maven clean compile install" from the root folder or in two following steps :
+The project can be built by executing "mvn clean compile install" from the root folder or in two following steps :
 
 1. In adam-ibs-data folder : maven clean compile install
  * You will obtain both adam-ibs-data-0.1.0.jar which is used as maven dependency in adam-ibs-core.
