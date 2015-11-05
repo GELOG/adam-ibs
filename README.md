@@ -60,6 +60,3 @@ CLI parser is integrated to code.
 
 2. Exemple : Execute --make-bed on --file and get a parquet output file --out
 ![image](./WIKI/img/execute/2-execute--make-bed.png)
-
-Output parquet files are generated in ./DATA/avro :
-![image](./WIKI/img/execute/2-result--make-bed.png)
