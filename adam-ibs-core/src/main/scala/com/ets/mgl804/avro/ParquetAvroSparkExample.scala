@@ -14,7 +14,7 @@ import parquet.avro.AvroParquetWriter
  */
 object ParquetAvroSparkExample {
   //This is the path where Parquet files will be created
-  private val DATA_PATH = "DATA/avro/"
+  private val DATA_PATH = "./"
 
   private var conf:SparkConf = _
   private var sqc:SQLContext = _

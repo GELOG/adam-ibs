@@ -9,10 +9,6 @@ import org.slf4j.LoggerFactory
  */
 object AppContext {
   val conf = new SparkConf().setAppName("Adam-IBS").setMaster("local")
-//    .set("akka.version","2.3.4")
-//    .set("akka.actor.guardian-supervisor-strategy","/")
-//    .set("akka.actor.creation-timeout","10")
-//    .set("akka.actor.unstarted-push-timeout", "20")
   val sc = new SparkContext(conf)
   val sqc = new SQLContext(sc)
   sqc.sql("SET spark.sql.parquet.binaryAsString=true")

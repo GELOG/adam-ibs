@@ -20,7 +20,7 @@ class PersistImportRecord(importRecord: ImportRecord, filename: String) {
   //This is the path where Parquet files will be created
   private val logger = LoggerFactory.getLogger(this.getClass)
   private val originalPlinkRecord = importRecord
-  private val DATA_PATH = "DATA/avro/"
+  private val DATA_PATH = "./"
   private val fileName = filename
   private val conf = AppContext.conf
   private val sc = AppContext.sc

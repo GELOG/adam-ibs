@@ -15,7 +15,7 @@ import parquet.avro.AvroParquetWriter
  */
 class ParquetWriter[T](data:scala.collection.mutable.Buffer[T], filename:String, avroSchemaInput:Schema) {
   private val logger = LoggerFactory.getLogger(this.getClass)
-  private val DATA_PATH = "DATA/avro/"
+  private val DATA_PATH = "./"
   private val fileName = filename
   private val avroSchema = avroSchemaInput
   private val conf = AppContext.conf
